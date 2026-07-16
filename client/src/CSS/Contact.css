@@ -1,0 +1,191 @@
+/* ===============================
+   Contact Page - Dark Theme
+   =============================== */
+.contact-page {
+  background: linear-gradient(180deg, #1a1a2e 0%, #1c1c3a 100%);
+  padding: 60px 20px;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+}
+
+.contact-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.contact-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #11CBE2;
+}
+
+.contact-header h1 span {
+  color: #f9b625;
+}
+
+.contact-header p {
+  font-size: 1rem;
+  color: #fff;
+}
+
+.contact-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ===============================
+   Contact Info Cards
+   =============================== */
+.contact-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+/* ===============================
+   Contact Info Cards Hover Effect
+   =============================== */
+/* ===============================
+   Contact Info Cards Hover Effect - Smooth
+   =============================== */
+.info-card {
+  background: #262644;
+  /* card bg dark */
+  color: #fff;
+  /* text white */
+  border-radius: 15px;
+  padding: 25px;
+  text-align: center;
+  width: 280px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  transition: transform 0.5s ease-in-out,
+    box-shadow 0.5s ease-in-out;
+}
+
+.info-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(17, 203, 226, 0.5);
+}
+
+.icon-circle {
+  width: 50px;
+  height: 50px;
+  background: #f97316;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 15px;
+  font-size: 1.5rem;
+}
+
+.info-card h4 {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.info-card p,
+.info-card a {
+  font-size: 1rem;
+  color: #fff;
+  text-decoration: none;
+}
+
+/* ===============================
+   Contact Form
+   =============================== */
+.contact-form {
+  width: 100%;
+  max-width: 600px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #2a3441;
+  background: #2a3441;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: #ccc;
+}
+
+.send-btn {
+  background: linear-gradient(90deg, #11CBE2, #2243B0, #7933E9);
+  color: #fff;
+  padding: 0.75rem 1.8rem;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.send-btn:hover {
+  background: linear-gradient(90deg, #22E3FF, #2F5BFF, #8A4DFF);
+  transform: translateY(-2px);
+}
+
+/* ===============================
+   Responsive Adjustments
+   =============================== */
+@media (max-width: 576px) {
+  .contact-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .contact-header p {
+    font-size: 0.95rem;
+  }
+
+  .contact-info {
+    gap: 20px;
+  }
+
+  .info-card {
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .contact-form {
+    padding: 0 5px;
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    font-size: 0.95rem;
+  }
+
+  .send-btn {
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.8rem;
+  }
+}
+
+@media (min-width: 577px) and (max-width: 991px) {
+  .contact-header h1 {
+    font-size: 2.1rem;
+  }
+
+  .info-card {
+    width: 240px;
+  }
+}

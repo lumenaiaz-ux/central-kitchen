@@ -1,0 +1,275 @@
+import React from 'react';
+import {
+  Drawer, List, ListItemButton, ListItemText, ListItemIcon,
+  Collapse, Toolbar, Typography, Divider,
+  Box
+} from '@mui/material';
+import {
+  ExpandLess, ExpandMore, Event, Person, Settings,
+  CalendarMonth, Group, PendingActions, LockClock, HowToReg, Block, LockReset, AccessTime, Apps
+} from '@mui/icons-material';
+import { useNavigate, useLocation } from 'react-router-dom';
+import CampaignIcon from '@mui/icons-material/Campaign';
+import uiColors from '../Styles/uiColors';
+
+
+const drawerWidth = 240;
+
+const AdminSidebar = ({ mobileOpen, setMobileOpen }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const [openAppointment, setOpenAppointment] = React.useState(true);
+  const [openUser, setOpenUser] = React.useState(true);
+
+  const isActive = (path) => location.pathname === path;
+
+  const itemStyle = {
+    color: uiColors.sidebar.itemColor,
+    '&.Mui-selected': {
+      backgroundColor: uiColors.sidebar.itemSelectedBg,
+      fontWeight: 'bold',
+    },
+    '&:hover': {
+      backgroundColor: uiColors.sidebar.itemHoverBg,
+    },
+  };
+
+  const subItemStyle = {
+    pl: 4,
+    color: uiColors.sidebar.subItemColor,
+    '&.Mui-selected': {
+      backgroundColor: uiColors.sidebar.subItemSelectedBg,
+      fontWeight: 'bold',
+    },
+    '&:hover': {
+      backgroundColor: uiColors.sidebar.subItemHoverBg,
+    },
+  };
+
+  const handleNavigate = (path) => {
+    navigate(path);
+    if (mobileOpen) setMobileOpen(false);
+  };
+
+  const drawerContent = (
+    <>
+      <Toolbar
+        sx={{
+          minHeight: { xs: 56, sm: 64 },
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Typography
+          variant="h6"
+          noWrap
+          sx={{
+            fontWeight: 700,
+            fontSize: { xs: '1rem', sm: '1.25rem' },
+            textAlign: 'center',
+          }}
+        >
+          Central Kitchen
+        </Typography>
+      </Toolbar>
+
+      <Divider />
+      <List>
+        <ListItemButton
+          sx={itemStyle}
+          selected={isActive('/admin/schedule')}
+          onClick={() => handleNavigate('/admin/schedule')}
+        >
+          <ListItemIcon sx={{ color: 'white' }}>
+            <CalendarMonth />
+          </ListItemIcon>
+          <ListItemText primary="Schedule" />
+        </ListItemButton>
+
+        <ListItemButton sx={itemStyle} onClick={() => setOpenAppointment((prev) => !prev)}>
+          <ListItemIcon sx={{ color: 'white' }}>
+            <Event />
+          </ListItemIcon>
+          <ListItemText primary="Appointments" />
+          {openAppointment ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+        <Collapse in={openAppointment} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItemButton
+              sx={subItemStyle}
+              selected={isActive('/admin/appointments')}
+              onClick={() => handleNavigate('/admin/appointments')}
+            >
+              <ListItemIcon sx={{ color: 'white' }}>
+                <Group />
+              </ListItemIcon>
+              <ListItemText primary="All Appointments" />
+            </ListItemButton>
+            <ListItemButton
+              sx={subItemStyle}
+              selected={isActive('/admin/appointments/future')}
+              onClick={() => handleNavigate('/admin/appointments/future')}
+            >
+              <ListItemIcon sx={{ color: 'white' }}>
+                <LockClock />
+              </ListItemIcon>
+              <ListItemText primary="Future Appointments" />
+            </ListItemButton>
+          </List>
+        </Collapse>
+
+        <ListItemButton sx={itemStyle} onClick={() => setOpenUser((prev) => !prev)}>
+          <ListItemIcon sx={{ color: 'white' }}>
+            <Person />
+          </ListItemIcon>
+          <ListItemText primary="Users" />
+          {openUser ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+        <Collapse in={openUser} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItemButton
+              sx={subItemStyle}
+              selected={isActive('/admin/users')}
+              onClick={() => handleNavigate('/admin/users')}
+            >
+              <ListItemIcon sx={{ color: 'white' }}>
+                <Group />
+              </ListItemIcon>
+              <ListItemText primary="All Users" />
+            </ListItemButton>
+            <ListItemButton
+              sx={subItemStyle}
+              selected={isActive('/admin/users/pending')}
+              onClick={() => handleNavigate('/admin/users/pending')}
+            >
+              <ListItemIcon sx={{ color: 'white' }}>
+                <PendingActions />
+              </ListItemIcon>
+              <ListItemText primary="Pending Approval" />
+            </ListItemButton>
+            {/* <ListItemButton
+              sx={subItemStyle}
+              selected={isActive('/admin/users/awaiting')}
+              onClick={() => handleNavigate('/admin/users/awaiting')}
+            >
+              <ListItemIcon sx={{ color: 'white' }}>
+                <HowToReg />
+              </ListItemIcon>
+              <ListItemText primary="Awaiting Confirmation" />
+            </ListItemButton> */}
+            <ListItemButton
+              sx={subItemStyle}
+              selected={isActive('/admin/users/frozen')}
+              onClick={() => handleNavigate('/admin/users/frozen')}
+            >
+              <ListItemIcon sx={{ color: 'white' }}>
+                <Block />
+              </ListItemIcon>
+              <ListItemText primary="Frozen Users" />
+            </ListItemButton>
+          </List>
+        </Collapse>
+
+        <ListItemButton
+          sx={itemStyle}
+          selected={isActive('/admin/dashboard')}
+          onClick={() => handleNavigate('/admin/dashboard')}
+        >
+          <ListItemIcon sx={{ color: 'white' }}>
+            <Settings />
+          </ListItemIcon>
+          <ListItemText primary="Dashboard" />
+        </ListItemButton>
+
+        <ListItemButton
+          sx={itemStyle}
+          selected={isActive('/admin/reset-password')}
+          onClick={() => handleNavigate('/admin/reset-password')}
+        >
+          <ListItemIcon sx={{ color: 'white' }}>
+            <LockReset />
+          </ListItemIcon>
+          <ListItemText primary="Reset Password" />
+        </ListItemButton>
+
+        <ListItemButton
+          sx={itemStyle}
+          selected={isActive('/admin/timings')}
+          onClick={() => handleNavigate('/admin/timings')}
+        >
+          <ListItemIcon sx={{ color: 'white' }}>
+            <AccessTime />
+          </ListItemIcon>
+          <ListItemText primary="Manage Shops" />
+        </ListItemButton>
+
+        <ListItemButton
+          sx={itemStyle}
+          selected={isActive('/admin/shops')}
+          onClick={() => handleNavigate('/admin/shops')}
+        >
+          <ListItemIcon sx={{ color: 'white' }}>
+            <Apps />
+          </ListItemIcon>
+          <ListItemText primary="Categories" />
+        </ListItemButton>
+        <ListItemButton
+          sx={itemStyle}
+          selected={isActive('/admin/updates')}
+          onClick={() => handleNavigate('/admin/updates')}
+        >
+          <ListItemIcon sx={{ color: 'white' }}>
+            <CampaignIcon />
+          </ListItemIcon>
+          <ListItemText primary="Announcement" />
+        </ListItemButton>
+
+      </List>
+    </>
+  );
+
+  return (
+    <>
+      {/* Desktop Permanent Drawer */}
+      <Drawer
+        variant="permanent"
+        sx={{
+          display: { xs: 'none', md: 'block' },
+          '& .MuiDrawer-paper': { width: drawerWidth, boxSizing: 'border-box', background: uiColors.card, color: 'white', minHeight: '100vh' },
+        }}
+        open
+      >
+        {drawerContent}
+      </Drawer>
+
+      {/* Mobile Temporary Drawer */}
+      <Drawer
+        variant="temporary"
+        open={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+        ModalProps={{ keepMounted: true }}
+        sx={{
+          display: { xs: 'block', md: 'none' },
+          '& .MuiDrawer-paper': {
+            width: drawerWidth,
+            boxSizing: 'border-box',
+            background: uiColors.card,
+            color: 'white',
+          },
+        }}
+      >
+
+        {/* <Toolbar /> */}
+        <Box sx={{ height: "20px" }}>
+        </Box>
+
+        {drawerContent}
+      </Drawer>
+
+    </>
+  );
+};
+
+export default AdminSidebar;

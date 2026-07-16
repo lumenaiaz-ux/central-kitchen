@@ -1,0 +1,205 @@
+/* ===============================
+   Top Header: Logo + Auth Buttons
+   =============================== */
+.header-top {
+  background: #262644;
+  padding: 0.8rem 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  z-index: 1020;
+}
+
+.header-top .logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+}
+
+.header-top .logo img {
+  width: 45px;
+  height: 45px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.header-top .logo:hover img {
+  transform: scale(1.05) rotate(-3deg);
+}
+
+.header-top .sitename {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+}
+
+/* Auth Buttons */
+.auth-section {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.auth-section .btn {
+  border-radius: 30px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 0.48rem 1.4rem;
+  border: 1.8px solid #11CBE2;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.login-btn {
+  background: transparent;
+  color: #fff !important;
+}
+
+.signup-btn {
+  background-color: transparent;
+  color: #fff !important;
+}
+
+.auth-section .btn:hover {
+  background-color: #11CBE2 !important;
+  color: #fff !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(17, 203, 226, 0.35);
+}
+
+/* ===============================
+   Navigation Header
+   =============================== */
+.header-nav {
+  background: #262644;
+  z-index: 1010;
+  margin-top: 2px;
+}
+
+.curved-navbar {
+  width: 100% !important;
+  max-width: none;
+  border-radius: 50px;
+  background: linear-gradient(90deg, #22E3FF, #2F5BFF, #8A4DFF);
+  backdrop-filter: blur(10px);
+  border: 1px solid #2a3441;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.curved-navbar:hover {
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+  transform: translateY(-1px);
+}
+
+/* Nav Links */
+.navbar-nav .nav-link {
+  color: #fff !important;
+  font-weight: 500;
+  font-size: 1rem;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.navbar-nav .nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0%;
+  height: 2px;
+  background: #11CBE2;
+  transition: width 0.3s ease, left 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.navbar-nav .nav-link:hover {
+  color: #11CBE2 !important;
+}
+
+.navbar-nav .nav-link:hover::after {
+  width: 60%;
+}
+
+/* Toggler */
+.navbar-toggler {
+  border: none !important;
+  outline: none !important;
+  z-index: 1050;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none !important;
+}
+
+.navbar-toggler i {
+  color: #fff;
+  font-size: 1.8rem;
+}
+
+/* ===============================
+   Responsive Adjustments
+   =============================== */
+@media (max-width: 992px) {
+  .navbar-collapse {
+    background: linear-gradient(90deg, #22E3FF, #2F5BFF, #8A4DFF);
+    /* dark dropdown */
+    border-radius: 10px;
+    margin-top: 0.8rem;
+    padding: 1rem 0;
+  }
+
+  .navbar-nav {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.7rem;
+  }
+
+  .navbar-nav .nav-link {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-top .container-fluid {
+    flex-direction: column;
+    gap: 0.8rem;
+    text-align: center;
+  }
+
+  .auth-section {
+    flex-direction: row;
+    justify-content: center;
+    gap: 0.6rem;
+  }
+
+  .auth-section .btn {
+    padding: 0.45rem 1.1rem;
+    font-size: 0.9rem;
+  }
+
+  .header-nav {
+    top: 110px;
+  }
+}
+
+@media (max-width: 576px) {
+  .header-top .logo img {
+    width: 38px;
+    height: 38px;
+  }
+
+  .header-top .sitename {
+    font-size: 1.2rem;
+  }
+
+  .curved-navbar {
+    width: 96%;
+    border-radius: 25px;
+    padding: 0.7rem 1rem;
+  }
+
+  .auth-section .btn {
+    width: 170px;
+  }
+}

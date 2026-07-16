@@ -1,0 +1,15 @@
+{
+  "short_name": "Central Kitchen",
+  "name": "Central Kitchen Dashboard",
+  "icons": [
+    {
+      "src": "new_logo_black.png",
+      "sizes": "512x512",
+      "type": "image/svg+xml+png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

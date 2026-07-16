@@ -1,0 +1,65 @@
+.topbar {
+  background: linear-gradient( 90deg, #22E3FF, #2F5BFF, #8A4DFF);
+  color: #ffffff; 
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  padding: 2px 2px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 900px) {
+  .topbar {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+
+.topbar-title {
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1;
+  color: #ffffff; 
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.topbar-greeting {
+  font-weight: 500;
+  color: #ffffff; /* <-- white greeting */
+  font-size: 0.95rem;
+}
+
+.topbar-logout,
+.topbar-home {
+  font-weight: 600;
+  text-transform: none;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.6); 
+  color: #ffffff; 
+  background-color: rgba(255,255,255,0.1);
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.topbar-logout:hover,
+.topbar-home:hover {
+  background-color: rgba(255,255,255,0.25); 
+  transform: translateY(-1px);
+}
+
+@media (max-width: 600px) {
+  .topbar-home,
+  .topbar-logout {
+    padding: 4px 8px;   
+    font-size: 0.75rem;  
+    border-radius: 5px;
+  }
+}

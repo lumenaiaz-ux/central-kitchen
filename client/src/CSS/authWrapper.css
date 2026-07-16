@@ -1,0 +1,11 @@
+.auth-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 20px;
+}
+
+.auth-card {
+  margin-bottom: 24px;
+}

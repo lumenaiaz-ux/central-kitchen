@@ -1,0 +1,165 @@
+import React, { useEffect, useState } from "react";
+import "../../CSS/Shops.css";
+import axios from "axios";
+import moment from "moment-timezone";
+import { Skeleton, IconButton } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { ArrowBack } from "@mui/icons-material";
+import uiColors from "../../Styles/uiColors";
+
+
+const DEFAULT_API = process.env.REACT_APP_API_URL || "";
+const AZ_TIMEZONE = "America/Phoenix";
+const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+const formatTo12Hour = (time) => {
+    if (!time) return "";
+    return moment(time, "HH:mm").format("hh:mm A");
+};
+
+
+const AdminShops = () => {
+    const [shops, setShops] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+
+    const fetchShops = async () => {
+        try {
+            setLoading(true);
+            const res = await axios.get(`${DEFAULT_API}/api/shops/all`);
+            setShops(res.data || []);
+        } catch (error) {
+            console.error("Failed to fetch shops:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchShops();
+    }, []);
+
+    const getTodayStatus = (timings) => {
+        const now = moment.tz(AZ_TIMEZONE);
+        const today = DAYS[now.day()];
+        const todayTiming = timings?.find(t => t.day === today);
+
+        if (!todayTiming || !todayTiming.open) {
+            return { status: "closed" };
+        }
+
+        const toMinutes = (t) => {
+            const [h, m] = t.split(":").map(Number);
+            return h * 60 + m;
+        };
+
+        const nowMin = now.hours() * 60 + now.minutes();
+
+        let status = "closed";
+        if (
+            todayTiming.break &&
+            todayTiming.breakStart &&
+            todayTiming.breakEnd &&
+            nowMin >= toMinutes(todayTiming.breakStart) &&
+            nowMin <= toMinutes(todayTiming.breakEnd)
+        ) {
+            status = "break";
+        }
+        else if (
+            todayTiming.openTime &&
+            todayTiming.closeTime &&
+            nowMin >= toMinutes(todayTiming.openTime) &&
+            nowMin <= toMinutes(todayTiming.closeTime)
+        ) {
+            status = "open";
+        }
+        return {
+            status,
+            openTime: todayTiming.openTime || "",
+            closeTime: todayTiming.closeTime || "",
+            breakStart: todayTiming.break ? todayTiming.breakStart : "",
+            breakEnd: todayTiming.break ? todayTiming.breakEnd : ""
+        };
+    };
+
+
+    return (
+        <div className="page-wrapper">
+            <div className="page-content">
+                <div style={{ marginTop: "24px", marginBottom: "5px", display: "flex" }}>
+                    <IconButton size="small" onClick={() => navigate(-1)}>
+                        <ArrowBack sx={{ color: uiColors.text.primary }} />
+                    </IconButton>
+                    <h4 style={{ fontWeight: 600, paddingLeft: "20px", paddingTop: "5px", color:"white" }}>
+                        Food Trucks
+                    </h4>
+                </div>
+                <div className="shops-container">
+                    {loading &&
+                        Array.from({ length: 6 }).map((_, i) => (
+                            <div key={i} className="shop-card">
+                                <Skeleton variant="rectangular" height={160} />
+                                <Skeleton variant="text" height={30} sx={{ mt: 1 }} />
+                                <Skeleton variant="text" width="60%" />
+                            </div>
+                        ))}
+
+                    {!loading &&
+                        shops.map((shop) => {
+                            const todayInfo = getTodayStatus(shop.timings);
+
+                            return (
+                                <div key={shop._id} className="shop-card"
+                                    onClick={() => {
+                                        console.log("Navigating to shopId:", shop._id);
+                                        navigate(`/admin/categories/${shop._id}`, {
+                                            state: {
+                                                shopName: shop.shopName,
+                                                ownerId: shop.userId,
+                                            }
+                                        });
+                                    }}>
+                                    <img src={shop.shopImage} alt={shop.shopName} />
+
+                                    <h5 className="shop-name">{shop.shopName}</h5>
+
+                                    <p className={`status ${todayInfo.status.toLowerCase()}`}>
+                                        {todayInfo.status}
+                                    </p>
+
+                                    <div className="timings-section">
+                                        {todayInfo.openTime && todayInfo.closeTime ? (
+                                            <>
+                                                <p className="timing-label">Today Opening:</p>
+                                                <p className="timing">
+                                                    {formatTo12Hour(todayInfo.openTime)} - {formatTo12Hour(todayInfo.closeTime)}
+                                                </p>
+                                            </>
+                                        ) : (
+                                            <p className="timing-closed">No timings available</p>
+                                        )}
+
+                                        {todayInfo.breakStart && todayInfo.breakEnd && (
+                                            <p className="break-timing">
+                                                Break Time: {formatTo12Hour(todayInfo.breakStart)} - {formatTo12Hour(todayInfo.breakEnd)}
+
+                                            </p>
+                                        )}
+
+                                    </div>
+                                </div>
+                            );
+                        })}
+
+                    {!loading && !shops.length && (
+                        <div className="no-shops-container">
+                            <p className="no-shops">No Shops Found</p>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default AdminShops;

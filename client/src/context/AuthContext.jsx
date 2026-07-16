@@ -1,0 +1,63 @@
+import React, { createContext, useState, useEffect, useContext, useRef } from 'react';
+
+export const AuthContext = createContext();
+export const useAuth = () => useContext(AuthContext);
+
+export const AuthProvider = ({ children }) => {
+  const [accessToken, setAccessToken] = useState(null);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const API_URL = process.env.REACT_APP_API_URL;
+
+  // 🔁 Restore session on refresh
+useEffect(() => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    setLoading(false);
+    return;
+  }
+
+  const fetchMe = async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/auth/me`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (!res.ok) throw new Error("Invalid token");
+
+      const data = await res.json();
+      setAccessToken(token);
+      setUser(data.user);
+    } catch {
+      localStorage.removeItem("token");
+      setUser(null);
+      setAccessToken(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchMe();
+}, [API_URL]);
+
+
+  const login = ({ accessToken, user }) => {
+    setAccessToken(accessToken);
+    setUser(user);
+    localStorage.setItem("token", accessToken);
+  };
+
+  const logout = () => {
+    setUser(null);
+    setAccessToken(null);
+     localStorage.removeItem("token");
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, accessToken, login, logout, loading }}>
+      {!loading && children}
+    </AuthContext.Provider>
+  );
+};
