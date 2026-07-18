@@ -171,6 +171,7 @@ function AppRoutes() {
           </PrivateRoute>
         }
       />
+      {/* Check of code  */}
 
       {/* CLIENT PROTECTED */}
       <Route
