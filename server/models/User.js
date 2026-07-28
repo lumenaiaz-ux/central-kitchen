@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required:true},
   role: { type: String, enum: ['admin', 'client'], default: 'client' },
 
-  status:{type:String,enum:['pending','approved'],default:'pending'},
+  status:{type:String,enum:['pending','approved','rejected'],default:'pending'},
 
   // Business info
   businessName: String,

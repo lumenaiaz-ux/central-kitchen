@@ -17,11 +17,31 @@ const app = express();
 connectDB();
 
 // Middleware
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+  'http://localhost:3001',
+  'http://127.0.0.1:3001',
+];
+
 app.use(cors({
-  origin: 'http://localhost:3000', // ✅ Allow frontend origin
-  credentials: true,               // ✅ Allow cookies/session
+  origin(origin, callback) {
+    // Allow non-browser tools (no Origin) and local CRA origins
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(null, false);
+  },
+  credentials: true,
 }));
 app.use(express.json());
+
+app.use((err, req, res, next) => {
+  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+    return res.status(400).json({ message: 'Invalid JSON body' });
+  }
+  return next(err);
+});
 
 // Routes
 app.use('/api/auth', authRoutes);

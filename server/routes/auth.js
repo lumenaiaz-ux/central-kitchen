@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const sendEmail = require('../utils/sendEmail');
 
-const ACCESS_SECRET = () => process.env.ACCESS_SECRET || 'access-secret';
+const ACCESS_SECRET = () => (process.env.ACCESS_SECRET || 'access-secret').trim();
 
 const isEnvAdmin = (email, password) => {
   const adminEmail = process.env.ADMIN_EMAIL;

@@ -8,7 +8,7 @@ import { AuthContext } from "../context/AuthContext";
 
 
 
-const DEFAULT_API = process.env.REACT_APP_API_URL || "";
+const DEFAULT_API = (process.env.REACT_APP_API_URL || "").replace(/\/$/, "").trim();
 
 function Login() {
   const { login } = useContext(AuthContext);
@@ -27,17 +27,31 @@ function Login() {
       return;
     }
 
+    const loginUrl = `${DEFAULT_API}/api/auth/login`;
+
     try {
-      const res = await fetch(`${DEFAULT_API}/api/auth/login`, {
+      const res = await fetch(loginUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
-      const data = await res.json();
+      let data = {};
+      const contentType = res.headers.get("content-type") || "";
+      if (contentType.includes("application/json")) {
+        data = await res.json();
+      } else {
+        toast.error(res.ok ? "Unexpected server response" : "Server error. Is the API running?");
+        return;
+      }
 
       if (!res.ok) {
-        toast.error(data.message || "Login failed");
+        toast.error(data.message || data.error || "Login failed");
+        return;
+      }
+
+      if (!data.token || !data.user) {
+        toast.error("Login failed: invalid response from server");
         return;
       }
 
@@ -50,8 +64,8 @@ function Login() {
       redirectLogin(data.user.role === "admin" ? "admin" : "client");
       setFormData({ email: "", password: "" });
     } catch (err) {
-      console.error("Login error:", err);
-      toast.error("Server error. Try again later.");
+      console.error("Login error:", err, "url=", loginUrl);
+      toast.error("Cannot reach server. Check that the API is running on port 5000.");
     }
   }
 
